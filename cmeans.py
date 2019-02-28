@@ -1,6 +1,6 @@
 """
-Implements C-Fuzzy clustering algorithm
-@author Lucas S.
+Implements the fuzzy c-means clustering algorithm
+@author Lucas Simões
 """
 import time
 import numpy as np
@@ -8,7 +8,7 @@ import numpy as np
 
 def init_u(data, n_c):
     """
-    @description Initialize the membership function U
+    @description Initialize the membership matrix U
     @param n_c: num of cluster centers
     @returns: a random pertinence matrix U for data
     """
@@ -18,12 +18,11 @@ def init_u(data, n_c):
 
 def calculate_c(data, U, m):
     """
-    @description calculates
+    @description calculates the clusters centers
     U: membership matrix
     c: number of clusters
     m: fuzzyness coefficient
     """
-
     u_power = np.power(U, m).T # TODO maybe alocate memory for this calculation
     return np.dot(u_power, data) / u_power.sum(axis=1)
 
@@ -43,14 +42,14 @@ def cmeans(data, n_c, m, epsilon, max_steps=2000, verbose=False):
     """
     Run the C-Means algorithm in @data with @c_n clusters;
     
-    The fuzzifier m determines the level of cluster fuzziness. 
+    The fuzzifier m determines the level of cluster fuzziness.
     A large  m results in smaller membership values, w_{ij} w_{ij}, 
     and hence, fuzzier clusters. In the limit m=1 , the memberships,  w_{ij} w_{ij}, 
     converge to 0 or 1, which implies a crisp partitioning. In the absence of 
     experimentation or domain knowledge, m is commonly set to 2. The algorithm 
     minimizes intra-cluster variance as well, but has the same problems as 
     k-means; the minimum is a local minimum, and the results depend on the initial 
-    choice of weights
+    choice of weights. 
 
     e: epsilon. Finish condition 
     m: fuzzyness coefficient
